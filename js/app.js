@@ -1,12 +1,12 @@
 const memoryGame = {
-    tileCount : 20, //liczba klocków
-    tileOnRow : 5, //liczba klocków na rząd
-    divBoard : null, //div z planszą gry
-    divScore : null, //div z wynikiem gry
-    tiles : [], //tutaj trafi wymieszana tablica klocków
-    tilesChecked : [], //zaznaczone klocki
-    moveCount : 0, //liczba ruchów
-    tilesImg : [ //grafiki dla klocków
+    tileCount : 20,
+    tileOnRow : 5,
+    divBoard : null,
+    divScore : null,
+    tiles : [],
+    tilesChecked : [],
+    moveCount : 0,
+    tilesImg : [
         'images/title_1.png',
         'images/title_2.png',
         'images/title_3.png',
@@ -18,13 +18,12 @@ const memoryGame = {
         'images/title_9.png',
         'images/title_10.png'
     ],
-    canGet : true, //czy można klikać na kafelki
-    tilePairs : 0, //liczba dopasowanych kafelkow
+    canGet : true,
+    tilePairs : 0,
 
     tileClick : function(e) {
         if (this.canGet) {
-            //jeżeli jeszcze nie pobraliśmy 1 elementu
-            //lub jeżeli index tego elementu nie istnieje w pobranych...
+
             if (!this.tilesChecked[0] || (this.tilesChecked[0].dataset.index !== e.target.dataset.index)) {
                 this.tilesChecked.push(e.target);
                 e.target.style.backgroundImage = 'url(' + this.tilesImg[e.target.dataset.cardType] + ')';
@@ -67,27 +66,27 @@ const memoryGame = {
     },
 
     startGame : function() {
-        //czyścimy planszę
+
         this.divBoard = document.querySelector('.game-board');
         this.divBoard.innerHTML = '';
 
-        //czyścimy planszę z ruchami
+
         this.divScore = document.querySelector('.game-score');
         this.divScore.innerHTML = '';
 
-        //czyścimy zmienne (bo gra może się zacząć ponownie)
+
         this.tiles = [];
         this.tilesChecked = [];
         this.moveCount = 0;
         this.canGet = true;
         this.tilePairs = 0;
 
-        //generujemy tablicę numerów kocków (parami)
+
         for (let i=0; i<this.tileCount; i++) {
             this.tiles.push(Math.floor(i/2));
         }
 
-        //i ją mieszamy
+
         for (let i=this.tileCount-1; i>0; i--) {
             const swap = Math.floor(Math.random()*i);
             const tmp = this.tiles[i];
@@ -103,13 +102,13 @@ const memoryGame = {
             tile.dataset.cardType = this.tiles[i];
             tile.dataset.index = i;
 
-            tile.style.left = 5 + (tile.offsetWidth+10) * (i%this.tileOnRow) + 'px'
+            tile.style.left = 5 + (tile.offsetWidth+10) * (i%this.tileOnRow) + 'px';
             tile.style.top = 5 + (tile.offsetHeight+10) * (Math.floor(i/this.tileOnRow)) + 'px';
 
             tile.addEventListener('click', this.tileClick.bind(this));
         }
     }
-}
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.game-start').addEventListener('click', function() {
