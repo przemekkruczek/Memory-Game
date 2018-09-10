@@ -138,8 +138,8 @@ body {
         height: auto;
     }
     .card, .back, .front{
-        height: 60px;
-        width: 60px;
+        height: 70px;
+        width: 70px;
         border-radius: 3px;
         margin: 2px;
     }
