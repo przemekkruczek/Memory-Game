@@ -146,19 +146,10 @@ body {
     .grid-tiles {
         max-width: 400px;
     }
-    /*.popup {*/
-        /*padding: 2px;*/
-        /*background-size: cover;*/
-        /*width: 80%;*/
-        /*height: 80%;*/
-    /*}*/
-    /*.popup .content-1{*/
-        /*font-size: 2em;*/
-    /*}*/
-    /*.popup .content-2{*/
-        /*padding: 0;*/
-        /*margin: 0 10px;*/
-        /*height: 40%;*/
-        /*font-size: 1em;*/
-    /*}*/
+    .popup{
+        height: 40%;
+    }
+    .popup .content-1{
+        font-size: 2em;
+    }
 }
