@@ -123,14 +123,8 @@ body {
     opacity: 100;
 }
 @media only screen and (max-width: 1120px) {
-    .title{
-        margin: 0 auto;
-        width: 90%;
-    }
     .title h1{
-        font-size: 60px;
-        height: auto;
-        line-height: 100px;
+        font-size: 10px;
     }
     .game{
         margin: 0 auto;
@@ -148,41 +142,41 @@ body {
         transition: all .4s linear;
     }
 }
-@media only screen and (max-width: 550px) {
-    body{
-        background-size: auto;
-        background-position: 70% 40%;
-    }
+/*@media only screen and (max-width: 550px) {*/
+    /*body{*/
+        /*background-size: auto;*/
+        /*background-position: 70% 40%;*/
+    /*}*/
 
-    .title h1{
-        font-size: 30px;
-        height: auto;
-        line-height: 40px;
-    }
-    .game{
-        position: absolute;
-        top: 45%;
-        transform: translateY(-50%);
-    }
-    .card, .back, .front{
-        height: 65px;
-        width: 65px;
-        border-radius: 3px;
-        margin: 2px;
-    }
-    .popup {
-        padding: 2px;
-        background-size: cover;
-        width: 80%;
-        height: 80%;
-    }
-    .popup .content-1{
-        font-size: 2em;
-    }
-    .popup .content-2{
-        padding: 0;
-        margin: 0 10px;
-        height: 40%;
-        font-size: 1em;
-    }
-}
+    /*.title h1{*/
+        /*font-size: 30px;*/
+        /*height: auto;*/
+        /*line-height: 40px;*/
+    /*}*/
+    /*.game{*/
+        /*position: absolute;*/
+        /*top: 45%;*/
+        /*transform: translateY(-50%);*/
+    /*}*/
+    /*.card, .back, .front{*/
+        /*height: 65px;*/
+        /*width: 65px;*/
+        /*border-radius: 3px;*/
+        /*margin: 2px;*/
+    /*}*/
+    /*.popup {*/
+        /*padding: 2px;*/
+        /*background-size: cover;*/
+        /*width: 80%;*/
+        /*height: 80%;*/
+    /*}*/
+    /*.popup .content-1{*/
+        /*font-size: 2em;*/
+    /*}*/
+    /*.popup .content-2{*/
+        /*padding: 0;*/
+        /*margin: 0 10px;*/
+        /*height: 40%;*/
+        /*font-size: 1em;*/
+    /*}*/
+/*}*/
