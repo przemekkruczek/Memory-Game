@@ -1,117 +1,100 @@
-const memoryGame = {
-    tileCount : 20,
-    tileOnRow : 5,
-    divBoard : null,
-    divScore : null,
-    tiles : [],
-    tilesChecked : [],
-    moveCount : 0,
-    tilesImg : [
-        'images/title_1.png',
-        'images/title_2.png',
-        'images/title_3.png',
-        'images/title_4.png',
-        'images/title_5.png',
-        'images/title_6.png',
-        'images/title_7.png',
-        'images/title_8.png',
-        'images/title_9.png',
-        'images/title_10.png'
-    ],
-    canGet : true,
-    tilePairs : 0,
+const cards = [
+    {'img':'images/title_1.png','number':1},
+    {'img':'images/title_2.png','number':2},
+    {'img':'images/title_3.png','number':3},
+    {'img':'images/title_4.png','number':4},
+    {'img':'images/title_5.png','number':5},
+    {'img':'images/title_6.png','number':6},
+    {'img':'images/title_7.png','number':7},
+    {'img':'images/title_8.png','number':8},
+    {'img':'images/title_9.png','number':9},
+    {'img':'images/title_10.png','number':10}
+];
 
-    tileClick : function(e) {
-        if (this.canGet) {
+const gameBoard = document.querySelector('.game-board');
+const gridTiles = document.createElement('div');
+gridTiles.setAttribute('class','grid-tiles');
+gameBoard.appendChild(gridTiles);
 
-            if (!this.tilesChecked[0] || (this.tilesChecked[0].dataset.index !== e.target.dataset.index)) {
-                this.tilesChecked.push(e.target);
-                e.target.style.backgroundImage = 'url(' + this.tilesImg[e.target.dataset.cardType] + ')';
-            }
+const gameGrid = cards.concat(cards);
 
-            if (this.tilesChecked.length === 2) {
-                this.canGet = false;
+let activeCard = "";
+const popup = document.getElementById("win-window");
+const activeCards = [];
+let gameResult = 0;
+const gamePairs = gameGrid.length/2;
+const startTime = new Date().getTime();
 
-                if (this.tilesChecked[0].dataset.cardType === this.tilesChecked[1].dataset.cardType) {
-                    setTimeout(this.deleteTiles.bind(this), 500);
-                } else {
-                    setTimeout(this.resetTiles.bind(this), 500);
+const clickCard = function () {
+    let card = document.querySelectorAll('.card');
+    card = [...card];
+
+    activeCard = this;
+    if(activeCard === activeCards[0]) return;
+    const back = this.lastChild;
+    const front = this.firstChild;
+    back.classList.add('back');
+    front.classList.remove('front');
+
+    //1 click
+    if(activeCards.length === 0) {
+        activeCards[0] = activeCard;
+    }
+    //2 click
+    else {
+        card.forEach(card => card.removeEventListener('click',clickCard));
+        activeCards[1] = activeCard;
+        setTimeout(function () {
+            if(activeCards[0].dataset.name === activeCards[1].dataset.name) {
+                activeCards.forEach(activeCard => {
+                    activeCard.classList.add('off');
+                    activeCard.firstChild.remove();
+                    activeCard.lastChild.remove();
+                });
+                gameResult++;
+                if(gameResult === gamePairs) {
+                    popup.classList.add("show");
+                    const endTime = new Date().getTime();
+                    const gameTime = (endTime - startTime)/1000;
+                    document.querySelector('.score').innerHTML = `${gameTime} seconds`;
                 }
-
-                this.moveCount++;
-                this.divScore.innerHTML = this.moveCount;
+            }else{
+                activeCards.forEach(activeCard => {
+                    activeCard.firstChild.classList.add('front');
+                    activeCard.lastChild.classList.remove('back');
+                });
             }
-        }
-    },
-
-    deleteTiles : function() {
-        this.tilesChecked[0].remove();
-        this.tilesChecked[1].remove();
-
-        this.canGet = true;
-        this.tilesChecked = [];
-
-        this.tilePairs++;
-        if (this.tilePairs >= this.tileCount / 2) {
-            alert('gameOver!');
-        }
-    },
-
-    resetTiles : function() {
-        this.tilesChecked[0].style.backgroundImage = 'url(images/title.png)';
-        this.tilesChecked[1].style.backgroundImage = 'url(images/title.png)';
-
-        this.tilesChecked = [];
-        this.canGet = true;
-    },
-
-    startGame : function() {
-
-        this.divBoard = document.querySelector('.game-board');
-        this.divBoard.innerHTML = '';
-
-
-        this.divScore = document.querySelector('.game-score');
-        this.divScore.innerHTML = '';
-
-
-        this.tiles = [];
-        this.tilesChecked = [];
-        this.moveCount = 0;
-        this.canGet = true;
-        this.tilePairs = 0;
-
-
-        for (let i=0; i<this.tileCount; i++) {
-            this.tiles.push(Math.floor(i/2));
-        }
-
-
-        for (let i=this.tileCount-1; i>0; i--) {
-            const swap = Math.floor(Math.random()*i);
-            const tmp = this.tiles[i];
-            this.tiles[i] = this.tiles[swap];
-            this.tiles[swap] = tmp;
-        }
-
-        for (let i=0; i<this.tileCount; i++) {
-            const tile = document.createElement('div');
-            tile.classList.add("game-tile");
-            this.divBoard.appendChild(tile);
-
-            tile.dataset.cardType = this.tiles[i];
-            tile.dataset.index = i;
-
-            tile.style.left = 5 + (tile.offsetWidth+10) * (i%this.tileOnRow) + 'px';
-            tile.style.top = 5 + (tile.offsetHeight+10) * (Math.floor(i/this.tileOnRow)) + 'px';
-
-            tile.addEventListener('click', this.tileClick.bind(this));
-        }
+            activeCard = '';
+            activeCards.length = 0;
+            card.forEach(card => card.addEventListener('click',clickCard));
+        },1000)
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('.game-start').addEventListener('click', function() {
-        memoryGame.startGame();
+function startGame(){
+    gameGrid.sort(() => Math.random()-0.5);
+
+    gameGrid.forEach(item => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.dataset.name = item.number;
+        const front = document.createElement("div");
+        const back = document.createElement("div");
+        back.classList.add("back");
+        back.style.backgroundImage = `url(${item.img})`;
+
+        gridTiles.appendChild(card);
+        card.appendChild(front);
+        card.appendChild(back);
+
+        setTimeout(function () {
+            gameGrid.forEach(item => {
+                front.classList.add('front');
+                back.classList.remove('back');
+                card.addEventListener('click',clickCard);
+            })
+        },1500);
     });
-});
+}
+startGame();
+
